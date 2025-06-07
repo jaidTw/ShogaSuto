@@ -6,6 +6,7 @@ An Discord bot for querying ZUTOMAYO's information
 
 * Anniversary Songs lookup
 Given a date or date range, the bot can tell what songs are reaching their anniversary day
+* Randomly drops a song with MV
 
 ## Usage
 
