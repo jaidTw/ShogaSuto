@@ -11,6 +11,7 @@ SONGS = {
     "2019-10-08" : ("こんなこと騒動",             "Konnakoto Soudou",       "mlA-Z7zSLHU"),
     "2019-10-18" : ("ハゼ馳せる果てるまで",       "Haze Haseru Haterumade", "ElnxZtiBDvs"),
     "2019-10-29" : ("Dear Mr 「F」",              "Dear. Mr\"F\"",          "Qw-FSw7d2zE"),
+    "2020-03-06" : ("サターン(Acoustic ver.)",    "Saturn"  ,               "ubrovjZUi64"),
     "2020-05-14" : ("お勉強しといてよ",           "Study Me",               "Atvsg_zogxo"),
     "2020-07-13" : ("MILABO",                     "MILABO",                 "I88PrE-KUPk"),
     "2020-07-23" : ("低血ボルト",                 "Fastening",              "COll6PdtI5w"),
@@ -20,7 +21,7 @@ SONGS = {
     "2021-01-20" : ("暗く黒く",                   "Darken",                 "dcOwj-QE_ZE"),
     "2021-02-10" : ("胸の煙",                     "One's Mind",             "wQPgM-9LatM"),
     "2021-03-30" : ("勘冴えて悔しいわ",           "Kan Saete Kuyashiiwa",   "4QePrv24TBU"),
-    "2021-06-08" : ("あいつら全員同窓会",         "Inside Joke",            "ZUwaudw8ht0"),
+    "2021-06-18" : ("あいつら全員同窓会",         "Inside Joke",            "ZUwaudw8ht0"),
     "2021-07-04" : ("ばかじゃないのに",           "Stay Foolish",           "YgmFIVOR1-I"),
     "2021-12-02" : ("猫リセット",                 "Neko Reset",             "Sfz5TpCRSiI"),
     "2022-02-16" : ("袖のキルト",                 "Quilt",                  "9PnCSI8ndws"),
@@ -31,6 +32,7 @@ SONGS = {
     "2022-12-15" : ("綺羅キラー",                 "Kira Killer",            "e5LaKxJVeVI"),
     "2023-05-15" : ("不法侵入",                   "Intrusion",              "SAdkxVFyAyc"),
     "2023-06-04" : ("花一匁",                     "Hanaichi Monnme",        "H88kps8X4Mk"),
+    "2023-08-20" : ("馴れ合いサーブ",             "Nareai Serve",           "bIW0n36TUSQ"),
     "2024-05-23" : ("嘘じゃない",                 "Truth in Lies",          "GfDXqY-V0EY"),
     "2024-06-06" : ("Blues in the Closet",        "Blues in the Closet",    "E8RMWLoAsa0"),
     "2024-08-29" : ("海馬成長痛",                 "Hippocampal Pain",       "PLG2Uexyi9s"),
@@ -39,7 +41,7 @@ SONGS = {
     "2025-02-28" : ("シェードの埃は延長",         "SHADE",                  "zjEMFuj23B4"),
     "2025-04-18" : ("微熱魔",                     "Warmthaholic",           "plpVOHqh3lA"),
     "2025-05-22" : ("クリームで会いにいけますか", "CREAM",                  "JQ2913bVo30"),
-#    "2025-06-12" : ("形",                         "Pain Give Form",         None),
+    "2025-06-12" : ("形",                         "Pain Give Form",         "6eFajRiOrpY"),
 }
 
 class Song:
@@ -112,6 +114,6 @@ def songs_in_range(begin, end):
     return anniv_songs
 
 def random_song():
-    if random.randint(0, 99) < 3:
+    if random.randint(0, 99) < 2:
         return Song("2009-10-25", "Never Gonna Give You Up", "", "dQw4w9WgXcQ")
     return random.choice(songs)
