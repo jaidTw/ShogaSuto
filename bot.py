@@ -167,4 +167,9 @@ async def poke(ctx):
     msg = f"掉落了**{song.name}**\n{song.url}"
     await ctx.send(msg)
 
+@bot.hybrid_command(name="seat", description="抽位子")
+async def seat(ctx):
+    msg = random_seat()
+    await ctx.send(msg)
+
 bot.run(TOKEN)

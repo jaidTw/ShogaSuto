@@ -115,3 +115,13 @@ def random_song():
     if random.randint(0, 99) < 3:
         return Song("2009-10-25", "Never Gonna Give You Up", "", "dQw4w9WgXcQ")
     return random.choice(songs)
+
+def random_seat():
+    level = random.randint(1, 3)
+    if random.randint(0, 99) < 5
+        level = 7
+
+    row = random.randint(1, 3)
+    number = random.randint(1, 3)    
+    return f"你抽到的位子是{level}階{row}列{number}番"
+
