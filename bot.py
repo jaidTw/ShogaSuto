@@ -9,7 +9,7 @@ from datetime import date, timedelta
 from discord import app_commands, AllowedMentions
 from discord.ext import commands, tasks
 from dotenv import load_dotenv
-from songs import songs_in_range, random_song
+from songs import songs_in_range, random_song, random_seat
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
