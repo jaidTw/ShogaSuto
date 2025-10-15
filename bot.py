@@ -182,8 +182,12 @@ async def poke(ctx):
 
 @bot.hybrid_command(name="seat", description="抽位子")
 async def seat(ctx):
+    if await unwilling_to_speak(ctx):
+        return
+
     msg = random_seat()
     await ctx.send(msg)
+
 @bot.hybrid_command(name="attend", description="參加")
 async def attend(ctx, tour="", date=""):
     if tour == "":
