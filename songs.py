@@ -121,7 +121,7 @@ def random_seat():
     if random.randint(0, 99) < 5
         level = 7
 
-    row = random.randint(1, 3)
-    number = random.randint(1, 3)    
+    row = random.randint(1, 30)
+    number = random.randint(1, 60)    
     return f"你抽到的位子是{level}階{row}列{number}番"
 
