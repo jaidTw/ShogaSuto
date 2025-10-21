@@ -9,7 +9,7 @@ from datetime import date, timedelta
 from discord import app_commands, AllowedMentions
 from discord.ext import commands, tasks
 from dotenv import load_dotenv
-from songs import songs_in_range, random_song, random_song_live
+from songs import songs_in_range, random_song, random_song_live, random_seat
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -188,8 +188,12 @@ async def poke(ctx):
 
 @bot.hybrid_command(name="seat", description="抽位子")
 async def seat(ctx):
+    if await unwilling_to_speak(ctx):
+        return
+
     msg = random_seat()
     await ctx.send(msg)
+
 @bot.hybrid_command(name="attend", description="參加")
 async def attend(ctx, tour="", date=""):
     if tour == "":

@@ -99,7 +99,7 @@ def random_song_live():
 
 def random_seat():
     level = random.randint(1, 3)
-    if random.randint(0, 99) < 5
+    if random.randint(0, 99) < 5:
         level = 7
 
     row = random.randint(1, 30)
