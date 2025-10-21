@@ -41,7 +41,7 @@ class Song:
 random.seed()
 songs = []
 
-for k, v in SONGS.items():
+for k, v in SONGS_with_MV.items():
     date = date.fromisoformat(k)
     songs.append(Song(date, *v))
 
