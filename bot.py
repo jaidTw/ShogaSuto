@@ -9,7 +9,7 @@ from datetime import date, timedelta
 from discord import app_commands, AllowedMentions
 from discord.ext import commands, tasks
 from dotenv import load_dotenv
-from songs import songs_in_range, random_song
+from songs import songs_in_range, random_song, random_song_live
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -177,6 +177,12 @@ async def next_n(ctx, n):
 @bot.hybrid_command(name="poke", description="戳戳")
 async def poke(ctx):
     song = random_song()
+    msg = f"掉落了**{song.name}**\n{song.url}"
+    await ctx.send(msg)
+
+@bot.hybrid_command(name="pokePro", description="戳戳Pro")
+async def poke(ctx):
+    song = random_song_live()
     msg = f"掉落了**{song.name}**\n{song.url}"
     await ctx.send(msg)
 
