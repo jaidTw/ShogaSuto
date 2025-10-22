@@ -82,8 +82,7 @@ songs_live = []
 for name, id in SONGS_all:
     songs_all.append(Song("2018-06-04", name, "", id))
 
-for k, v in SONGS_live:
-    date = date.fromisoformat(k)
+for name, id in SONGS_live:
     songs_live.append(Song("2018-06-04", name, "", id))
 
 def random_song():
