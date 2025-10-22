@@ -79,21 +79,20 @@ def random_song_legacy():
 songs_all = []
 songs_live = []
 
-for k, v in SONGS_all.items():
-    date = date.fromisoformat(k)
-    songs.append(Song(date, *v))
+for name, id in SONGS_all.items():
+    songs_all.append(Song("2018-06-04", name, "", id))
 
 for k, v in SONGS_live.items():
     date = date.fromisoformat(k)
-    songs.append(Song(date, *v))
+    songs_live.append(Song("2018-06-04", name, "", id))
 
 def random_song():
-    if random.randint(0, 99) < 2:
+    if random.randint(0, 2*len(songs_all)) < 1:
         return Song("2009-10-25", "Never Gonna Give You Up", "", "dQw4w9WgXcQ")
     return random.choice(songs_all)
 
 def random_song_live():
-    if random.randint(0, 99) < 2:
+    if random.randint(0, 5*len(songs_live)) < 1:
         return Song("2009-10-25", "Never Gonna Give You Up", "", "dQw4w9WgXcQ")
     return random.choice(songs_live)
 
