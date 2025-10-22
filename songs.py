@@ -79,10 +79,10 @@ def random_song_legacy():
 songs_all = []
 songs_live = []
 
-for name, id in SONGS_all.items():
+for name, id in SONGS_all:
     songs_all.append(Song("2018-06-04", name, "", id))
 
-for k, v in SONGS_live.items():
+for k, v in SONGS_live:
     date = date.fromisoformat(k)
     songs_live.append(Song("2018-06-04", name, "", id))
 
