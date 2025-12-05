@@ -114,11 +114,21 @@ def songs_in_range(begin, end):
     return anniv_songs
 
 def random_song():
-    if random.randint(0, 99) < 2:
-        return Song("2009-10-25", "Never Gonna Give You Up", "", "dQw4w9WgXcQ")
+    if random.randint(0, 99) < 5:
+        if random.randint(0, 2) == 1:
+            return Song("2009-10-25", "Never Gonna Give You Up", "", "dQw4w9WgXcQ")
+        else:
+            return Song("2009-10-25", "【統神端火鍋】高畫質修復", "", "dMTy6C4UiQ4")
     return random.choice(songs)
 
 def random_seat():
+    if random.randint(0, 100) < 5:
+        if (rand := random.randint(0, 3)) == 0:
+            return "你抽到的位子是保羅的大腿上"
+        elif rand == 1:
+            return "你落選了"
+        else:
+            return "你抽到了海軍陸戰隊！！"
     level = random.randint(1, 3)
     if random.randint(0, 99) < 5:
         level = 7
