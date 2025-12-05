@@ -10,6 +10,7 @@ from discord import app_commands, AllowedMentions
 from discord.ext import commands, tasks
 from dotenv import load_dotenv
 from songs import songs_in_range, random_song, random_seat
+from back import paulback
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -186,6 +187,14 @@ async def seat(ctx):
         return
 
     msg = random_seat()
+    await ctx.send(msg)
+
+@bot.hybrid_command(name="paulback", description="抽保背")
+async def back(ctx):
+    if await unwilling_to_speak(ctx):
+        return
+
+    msg = paulback()
     await ctx.send(msg)
 
 @bot.hybrid_command(name="attend", description="參加")
