@@ -3,7 +3,6 @@
 import discord
 import os
 import random
-import Lives
 from random import randint
 from datetime import date, timedelta
 from discord import app_commands, AllowedMentions
@@ -196,70 +195,5 @@ async def back(ctx):
 
     msg = paulback()
     await ctx.send(msg)
-
-@bot.hybrid_command(name="attend", description="參加")
-async def attend(ctx, tour="", date=""):
-    if tour == "":
-        msg = Lives.list_tours()
-    elif date == "":
-        msg = Lives.list_lives(tour)
-    else:
-        if Lives.reg_attend(tour, date, ctx.guild.id, ctx.author.id):
-            msg = f"發生錯誤，請確認參數是否正確"
-        else:
-            msg = f"**{ctx.author.mention}**已註冊參加{date}的公演"
-    await ctx.send(msg, allowed_mentions=AllowedMentions.none())
-
-@bot.hybrid_command(name="unattend", description="取消參加")
-async def unattend(ctx, tour="", date=""):
-    if tour == "":
-        msg = Lives.list_tours()
-    elif date == "":
-        msg = Lives.list_lives(tour)
-    else:
-        if Lives.unreg_attend(tour, date, ctx.guild.id, ctx.author.id):
-            msg = f"發生錯誤，請確認參數是否正確"
-        else:
-            msg = f"**{ctx.author.mention}**已取消參加{date}的公演"
-    await ctx.send(msg, allowed_mentions=AllowedMentions.none())
-
-@bot.hybrid_command(name="attendee", description="查詢參加者")
-async def attendee(ctx, tour="", date=""):
-    await ctx.defer()
-    if tour == "":
-        msg = Lives.list_tours()
-    elif date == "":
-        lives = Lives.list_tour_attendees(tour)
-        if not(lives):
-            msg = f"發生錯誤，請確認參數是否正確"
-        else:
-            tour_name = Lives.get_tour_name(tour)
-            msg = f"**{tour_name}** 的參加者：\n\n"
-            for live in lives:
-                attendees = []
-                for gid, uid in live['members']:
-                    if gid == ctx.guild.id:
-                        mem = await ctx.guild.fetch_member(uid)
-                        attendees.append(mem.mention)
-                msg += f"{live['date'].strftime('%m/%d')} {live['location']}：" + "、".join(attendees) + "\n"
-    else:
-        lives = Lives.list_attend(tour, date)
-        if not(lives):
-            msg = f"發生錯誤，請確認參數是否正確"
-        else:
-            msg = ""
-            for live in lives:
-                attendees = []
-                tour_name = Lives.get_tour_name(tour)
-                msg += f"{tour_name} {live['date'].strftime('%m/%d')} {live['location']} 的參加者：\n"
-                for gid, uid in live['members']:
-                    if gid == ctx.guild.id:
-                        mem = await ctx.guild.fetch_member(uid)
-                        attendees.append(mem.mention)
-                if any(attendees):
-                    msg += "、".join(attendees) + "\n"
-                else:
-                    msg += "無\n"
-    await ctx.send(msg, allowed_mentions=AllowedMentions.none())
 
 bot.run(TOKEN)
