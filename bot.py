@@ -151,7 +151,7 @@ async def post_anniv():
     """Post anniversary songs on 9AM UTC+8 every day"""
     songs = songs_in_range(date.today(), date.today() + timedelta(days=1))
     if not any(songs):
-        return jsonify({"status": "success"})
+        return
 
     channel = bot.get_channel(BIRTHDAY_CHANNEL)
     try:
@@ -164,9 +164,8 @@ async def post_anniv():
             await asyncio.sleep(1)
     except Exception as e:
         print(f"Error in post_anniv: {e}")
-        return {"status": "error", "message": str(e)}
 
-    return result
+    return
 
 @tasks.loop(minutes=5)
 async def scrape_tickets():
