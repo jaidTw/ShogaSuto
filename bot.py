@@ -145,7 +145,7 @@ async def post_tickets():
         print(f"Error in post_tickets: {e}")
         return {"status": "error", "message": str(e)}
 
-TRIGGER_TIME = datetime.time(hour=1, minute=0, tzinfo=datetime.timezone.utc)
+TRIGGER_TIME = datetime.time(hour=1, minute=0)
 @tasks.loop(time=TRIGGER_TIME)
 async def post_anniv():
     """Post anniversary songs on 9AM UTC+8 every day"""
@@ -327,7 +327,7 @@ async def name(ctx, d=None):
     if await unwilling_to_speak(ctx):
         return
         
-    msg = "我現在的名字是「**アポ取りしょうがストリングス**」"
+    msg = "我現在的名字是「**大納言しょうがストリングス**」"
     if d != None:
         try:
             d = date.fromisoformat(d)
@@ -336,18 +336,20 @@ async def name(ctx, d=None):
         else:
             if d < date(2021, 4, 5):
                 msg = f"我在{d}時還沒誕生"
-            elif date(2021, 4, 5) < d <= date(2022, 4, 5):
+            elif date(2021, 4, 5) <= d < date(2022, 4, 5):
                 msg = f"我在{d}時的名字是「**新生姜ストリングス**」"
-            elif date(2022, 4, 5) < d <= date(2022, 9, 1):
+            elif date(2022, 4, 5) <= d < date(2022, 9, 1):
                 msg = f"我在{d}時的名字是「**真・しょうがストリングス**」"
-            elif date(2022, 9, 1) < d <= date(2023, 4, 5):
+            elif date(2022, 9, 1) <= d < date(2023, 4, 5):
                 msg = f"我在{d}時的名字是「**家系・しょうがストリングス**」"
-            elif date(2023, 4, 5) < d <= date(2024, 4, 5):
+            elif date(2023, 4, 5) <= d < date(2024, 4, 5):
                 msg = f"我在{d}時的名字是「**SASUKE・しょうがストリングス**」"
-            elif date(2024, 4, 5) < d <= date(2025, 4, 5):
+            elif date(2024, 4, 5) <= d < date(2025, 4, 5):
                 msg = f"我在{d}時的名字是「**パッド・パウエルしょうがストリングス**」"
-            elif date(2025, 4, 5) < d:
+            elif date(2025, 4, 5) <= d < date(2026, 4, 5):
                 msg = f"我在{d}時的名字是「**アポ取りしょうがストリングス**」"
+            elif date(2026, 4, 5) <= d:
+                msg = f"我在{d}時的名字是「**大納言しょうがストリングス**」"
     await ctx.send(msg)
 
 @bot.hybrid_command(name="chronical", description="顯示生姜的生涯事紀")
@@ -362,6 +364,7 @@ async def chronical(ctx, d=None):
     msg += f"2023-04-05 改名「**SASUKE・しょうがストリングス**」\n"
     msg += f"2024-04-05 改名「**パッド・パウエルしょうがストリングス**」\n"
     msg += f"2025-04-05 改名「**アポ取りしょうがストリングス**」\n"
+    msg += f"2026-04-05 改名「**大納言しょうがストリングス**」\n"
     await ctx.send(msg)
 
 @bot.hybrid_command(name="interval", description="列出日期[a, b)之間滿週年的歌曲，格式為YYYY-MM-DD且間隔不能大於365天")

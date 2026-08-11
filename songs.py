@@ -42,6 +42,8 @@ SONGS = {
     "2025-04-18" : ("微熱魔",                     "Warmthaholic",           "plpVOHqh3lA"),
     "2025-05-22" : ("クリームで会いにいけますか", "CREAM",                  "JQ2913bVo30"),
     "2025-06-12" : ("形",                         "Pain Give Form",         "6eFajRiOrpY"),
+    "2026-01-29" : ("メディアノーチェ",           "Medianoche",             "sBpITQ7oXxM"),
+    "2026-03-05" : ("よもすがら",                 "yomosugara",             "rsjaFk0Z5es"),
 }
 
 class Song:
@@ -114,7 +116,7 @@ def songs_in_range(begin, end):
     return anniv_songs
 
 def random_song():
-    if random.randint(0, 99) < 5:
+    if random.randint(0, 99) < 3:
         if random.randint(0, 2) == 1:
             return Song("2009-10-25", "Never Gonna Give You Up", "", "dQw4w9WgXcQ")
         else:
