@@ -63,16 +63,14 @@ def format_ticket_for_discord(ticket):
     # Add fields
     if ticket['date']:
         embed.add_field(name="📅 日付", value=ticket['date'], inline=True)
-    if ticket['time']:
-        embed.add_field(name="🕐 時間", value=ticket['time'], inline=True)
     if ticket['venue']:
         embed.add_field(name="🏢 会場", value=ticket['venue'], inline=True)
-    if ticket['location']:
-        embed.add_field(name="📍 場所", value=ticket['location'], inline=True)
     if ticket['seat_info']:
-        embed.add_field(name="💺 座席", value=ticket['seat_info'], inline=True)
+        embed.add_field(name="💺 席種", value=ticket['seat_info'], inline=True)
     if ticket['days_remaining']:
         embed.add_field(name="⏰ 残り", value=ticket['days_remaining'], inline=True)
+    if ticket['description']:
+        embed.add_field(name="📝 詳細", value=ticket['description'], inline=False)
 
     # Add instant buy indicator
     if ticket['is_instant_buy']:

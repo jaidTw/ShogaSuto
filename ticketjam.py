@@ -154,19 +154,24 @@ class TicketDatabase:
             cursor = conn.cursor()
 
             # Check if ticket already exists
-            cursor.execute('SELECT ticket_id, price, status FROM tickets WHERE ticket_id = ?', (ticket.ticket_id,))
+            cursor.execute(
+                'SELECT ticket_id, price, seat_info, status FROM tickets WHERE ticket_id = ?',
+                (ticket.ticket_id,)
+            )
             existing = cursor.fetchone()
 
             current_time = datetime.now().isoformat()
 
             if existing:
-                existing_id, existing_price, existing_status = existing
+                existing_id, existing_price, existing_seat_info, existing_status = existing
 
                 # Update last_seen timestamp
                 ticket.last_seen = current_time
 
-                # Check if price changed
+                # Detect changes that should trigger a new Discord post.
                 price_changed = existing_price != ticket.price
+                seat_info_changed = (existing_seat_info or "") != (ticket.seat_info or "")
+                changes = []
                 if price_changed:
                     # Record price change
                     cursor.execute('''
@@ -174,13 +179,18 @@ class TicketDatabase:
                         VALUES (?, ?)
                     ''', (ticket.ticket_id, ticket.price))
 
-                    action = f"Price changed from {existing_price} to {ticket.price}"
-                else:
-                    action = "Updated last_seen"
+                    changes.append(f"Price changed from {existing_price} to {ticket.price}")
+                if seat_info_changed:
+                    changes.append(
+                        f"Seat info changed from {existing_seat_info or '(empty)'} "
+                        f"to {ticket.seat_info or '(empty)'}"
+                    )
+
+                action = "; ".join(changes) if changes else "Updated last_seen"
 
                 # Update the ticket
-                # If price changed, set posted to false to trigger re-posting
-                if price_changed:
+                # Re-post when either the price or seat type has changed.
+                if price_changed or seat_info_changed:
                     cursor.execute('''
                         UPDATE tickets SET
                             title = ?, event_name = ?, date = ?, time = ?, venue = ?, location = ?,
@@ -623,6 +633,7 @@ class TicketJamScraper:
 
     def __init__(self, db_path: str = "ticketjam.db"):
         self.session = requests.Session()
+        self._ticket_details_cache = {}
         self.session.headers.update({
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
@@ -632,6 +643,40 @@ class TicketJamScraper:
             'Upgrade-Insecure-Requests': '1',
         })
         self.db = TicketDatabase(db_path)
+
+    def _extract_ticket_details(self, url: str) -> Dict[str, str]:
+        """Fetch the ticket page and extract fields absent from list cards."""
+        empty_details = {'description': '', 'seat_info': ''}
+        if not url:
+            return empty_details
+        if url in self._ticket_details_cache:
+            return self._ticket_details_cache[url]
+
+        details = empty_details.copy()
+        try:
+            response = self.session.get(url, timeout=30)
+            response.raise_for_status()
+            soup = BeautifulSoup(response.content, 'html.parser')
+
+            labels = {
+                'チケットの説明': ('description', 500),
+                '詳細': ('description', 500),
+                '席種': ('seat_info', 1024),
+            }
+            for label_text, (field, max_length) in labels.items():
+                label = soup.find(
+                    lambda tag: tag.name in ('th', 'dt')
+                    and tag.get_text(" ", strip=True) == label_text
+                )
+                if label:
+                    value = label.find_next_sibling(['td', 'dd'])
+                    if value:
+                        details[field] = value.get_text("\n", strip=True)[:max_length]
+        except requests.RequestException as e:
+            print(f"Error fetching ticket details from {url}: {e}")
+
+        self._ticket_details_cache[url] = details
+        return details
 
     def scrape_tickets(self, url: str) -> List[TicketInfo]:
         """Scrape tickets from TicketJam URL using direct HTML element extraction"""
@@ -772,8 +817,6 @@ class TicketJamScraper:
             full_text = element.get_text(separator='\n', strip=True)
             lines = [line.strip() for line in full_text.split('\n') if line.strip()]
 
-
-
             # Extract price from full text (handles multi-line prices)
             price_patterns = [
                 r'(\d{1,3}(?:,\d{3})*)[\s\n]*円(?:/枚)?',  # With optional /枚
@@ -853,8 +896,11 @@ class TicketJamScraper:
                     ticket.venue = venue_location_match2.group(2).strip()
                     break
 
-            # Store full description (first 500 chars)
-            ticket.description = full_text[:500] if full_text else ""
+            # These fields are only available on the individual ticket page,
+            # not in the listing card.
+            ticket_details = self._extract_ticket_details(ticket.url)
+            ticket.description = ticket_details['description']
+            ticket.seat_info = ticket_details['seat_info']
 
             # Generate unique ticket ID after all fields are populated
             ticket.generate_ticket_id()
@@ -903,10 +949,11 @@ class TicketJamScraper:
             if is_new:
                 new_count += 1
                 new_tickets.append(ticket)
-            elif "Price changed" in action:
-                # Only count as updated if something actually changed (price change)
+            elif action != "Updated last_seen":
+                # Count price or seat type changes as real updates.
                 updated_count += 1
-                price_changes.append((ticket, action))
+                if "Price changed" in action:
+                    price_changes.append((ticket, action))
             # If action is just "Updated last_seen", don't count as updated
 
         # Delete missing tickets (they're no longer available)
