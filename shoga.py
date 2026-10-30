@@ -37,8 +37,20 @@ SHOGAS = [
     "rzU4YDM.png",
 ]
 
+NAILONGS = [
+    "53NIvAc.jpeg",
+    "9jwwono.jpeg",
+    "eK6EGGd.jpeg",
+    "ALlZD5v.png",
+    "bdtqs1h.jpeg",
+    "bClHZyn.jpeg",
+]
+
 def random_shoga():
-    fname = random.choice(SHOGAS)
+    if random.randint(0, 99) < 2:
+        fname = random.choice(NAILONGS)
+    else:
+        fname = random.choice(SHOGAS)
 
     return f"https://i.imgur.com/{fname}"
 
