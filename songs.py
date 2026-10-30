@@ -46,6 +46,7 @@ SONGS = [
     ("2026-03-05", "よもすがら",                 "yomosugara",             "rsjaFk0Z5es"),
     ("2026-03-31", "ultra魂",                    "ultra soul",             "lpg5nhWapjU"),
     ("2026-07-06", "イチジク煙",                 "Fig Smoke",              "4LDQXYTfWjA"),
+    ("2026-10-08", "あかねさす頃",               "akanesasu",              "Z_k0hvdXYjM"),
 ]
 
 class Song:
