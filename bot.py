@@ -12,6 +12,7 @@ from discord.ext import commands, tasks
 from dotenv import load_dotenv
 from songs import songs_in_range, random_song, random_seat
 from back import paulback
+from shoga import random_shoga
 from ticketjam import TicketDatabase, mark_tickets_as_posted, TicketJamScraper
 
 load_dotenv()
@@ -460,6 +461,10 @@ async def poke(ctx):
     song = random_song()
     msg = f"掉落了**{song.name}**\n{song.url}"
     await ctx.send(msg)
+
+@bot.hybrid_command(name="pet", description="摸摸")
+async def pet(ctx):
+    await ctx.send(random_shoga())
 
 @bot.hybrid_command(name="seat", description="抽位子")
 async def seat(ctx):

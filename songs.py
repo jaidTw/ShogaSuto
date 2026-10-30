@@ -124,39 +124,18 @@ def random_song():
             return Song("2009-10-25", "【統神端火鍋】高畫質修復", "", "dMTy6C4UiQ4")
     return random.choice(songs)
 
-# def random_seat():
-#     if random.randint(0, 100) < 5:
-#         if (rand := random.randint(0, 3)) == 0:
-#             return "你抽到的位子是保羅的大腿上"
-#         elif rand == 1:
-#             return "你落選了"
-#         else:
-#             return "你抽到了海軍陸戰隊！！"
-#     level = random.randint(1, 3)
-#     if random.randint(0, 99) < 5:
-#         level = 7
-#
-#     row = random.randint(1, 30)
-#     number = random.randint(1, 60)    
-#     return f"你抽到的位子是{level}階{row}列{number}番"
-
 def random_seat():
     if random.randint(0, 100) < 5:
-        if (rand := random.randint(0, 4)) == 0:
+        if (rand := random.randint(0, 3)) == 0:
             return "你抽到的位子是保羅的大腿上"
         elif rand == 1:
-            return "你抽到了大和西大寺站瞭望台"
-        elif rand == 2:
-            return "你抽到了近鉄奈良線快速急行"
+            return "你落選了"
         else:
             return "你抽到了海軍陸戰隊！！"
-    seat = random.randint(1, 30001)
-    if seat < 4001:
-        block = chr(ord('A') + seat // 1000)
-        num = seat % 1000
-        return f"你抽到的位子是 Premium Area {block} Block {num} 番"
-    else:
-        seat = seat - 4000
-        block = chr(ord('A') + seat // 1000)
-        num = seat % 1000
-        return f"你抽到的位子是 Standard Area {block} Block {num} 番"
+    level = random.randint(1, 3)
+    if random.randint(0, 99) < 5:
+        level = 7
+
+    row = random.randint(1, 30)
+    number = random.randint(1, 60)    
+    return f"你抽到的位子是{level}階{row}列{number}番"
